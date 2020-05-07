@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/fcamacho8/Employee-Tracker/issues"
   },
-  "homepage": "https://github.com/fcamacho8/Employee-Tracker#readme"
+  "homepage": "https://github.com/fcamacho8/Employee-Tracker#readme",
+  "dependencies": {
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
 }

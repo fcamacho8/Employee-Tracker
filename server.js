@@ -22,6 +22,7 @@ function initialQuestion() {
     ).then(answers => {
         switch (answers.start) {
             case "Add departments":
+                addDepartment();
                 break;
             case "Add roles":
                 break;
@@ -41,7 +42,25 @@ function initialQuestion() {
     })
 }
 
+function addDepartment(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: 'name',
+            message: `What's the name of the new department?`
+        }
+    ]).then(answers => {
+       connection.query("INSERT INTO department (name) VALUES (?)", [answers.name], (err, result)=>{
+           if (err) throw err;
+           console.log("New Department Added");
+           initialQuestion();
+       })
+    });
+
+}
+
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
+    initialQuestion();
 });
