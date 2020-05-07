@@ -35,8 +35,10 @@ function initialQuestion() {
                 viewDepartments();
                 break;
             case "View Roles":
+                viewRoles();
                 break;
             case "View Employees":
+                viewEmployees();
                 break;
             case "Update Employee Roles":
                 break;
@@ -172,6 +174,25 @@ function viewDepartments() {
     initialQuestion();
 }
 
+function viewRoles() {
+    connection.query(`SELECT * FROM _role
+    LEFT JOIN department
+    ON _role.department_id = department.id`, (err, data) => {
+        console.table(data);
+    });
+    initialQuestion();
+}
+
+function viewEmployees() {
+    connection.query(`SELECT first_name, last_name, title, salary, department_name FROM employee
+    LEFT JOIN _role
+    ON employee.role_id = _role.id
+    LEFT JOIN department
+    ON _role.department_id = department.id;`, (err, data) => {
+        console.table(data);
+    });
+    initialQuestion();
+}
 
 connection.connect(function (err) {
     if (err) throw err;
