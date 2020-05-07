@@ -1,3 +1,5 @@
+### Schema
+
 DROP DATABASE IF EXISTS trackerDB;
 CREATE DATABASE trackerDB;
 
