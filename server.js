@@ -41,6 +41,7 @@ function initialQuestion() {
                 viewEmployees();
                 break;
             case "Update Employee Roles":
+                updateER();
                 break;
 
 
@@ -192,6 +193,50 @@ function viewEmployees() {
         console.table(data);
     });
     initialQuestion();
+}
+
+function updateER() {
+    let employee = [];
+    connection.query("SELECT * FROM employee", function (err, res) {
+        res.forEach(element => {
+            employee.push(element.first_name);
+        });
+        inquirer.prompt(
+            [
+                {
+                    type: "list",
+                    name: "nameEmployee",
+                    message: "Which Employee?",
+                    choices: employee
+                }
+            ]
+        ).then(answers => {
+            let update;
+            connection.query("SELECT role_id  FROM employee WHERE first_name = ? ", [answers.nameEmployee], (err, data) => {
+                data.forEach(element => {
+                    update = element.role_id;
+                });
+                let roleTitle = [];
+                connection.query("SELECT * FROM _role", function (err, rolres) {
+                    rolres.forEach(element => {
+                        roleTitle.push(element.title);
+                    });
+                    inquirer.prompt([
+                        {
+                            type: "list",
+                            name: "updateRole",
+                            message: "Choose Role",
+                            choices: roleTitle
+                        }
+                    ]).then(answers=>{
+                        connection.query("UPDATE _role SET title = ? WHERE id = ?", [answers.updateRole, update]);
+                        console.log("SUCCESS");
+                        initialQuestion();
+                    })
+                })
+            })
+        })
+    })
 }
 
 connection.connect(function (err) {
